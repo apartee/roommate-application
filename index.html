@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roommate Application</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Floating decorative elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 10%;
+            right: 8%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #059669, #047857);
+            border-radius: 8px;
+            opacity: 0.15;
+            z-index: 0;
+            transform: rotate(15deg);
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 15%;
+            left: 6%;
+            width: 80px;
+            height: 200px;
+            background: linear-gradient(135deg, #d97706, #ea580c);
+            border-radius: 8px;
+            opacity: 0.12;
+            z-index: 0;
+            transform: rotate(-12deg);
+        }
+        
+        .floating-accent {
+            position: fixed;
+            top: 60%;
+            right: 4%;
+            width: 60px;
+            height: 60px;
+            background: #059669;
+            border-radius: 50%;
+            opacity: 0.18;
+            z-index: 0;
+        }
+        
+        .floating-line {
+            position: fixed;
+            top: 25%;
+            left: 2%;
+            width: 4px;
+            height: 150px;
+            background: linear-gradient(to bottom, #d97706, transparent);
+            opacity: 0.25;
+            z-index: 0;
+            border-radius: 2px;
+        }
+        
+        .floating-triangle {
+            position: fixed;
+            top: 45%;
+            left: 8%;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 52px solid #059669;
+            opacity: 0.1;
+            z-index: 0;
+            transform: rotate(25deg);
+        }
+        
+        .floating-dot {
+            position: fixed;
+            bottom: 25%;
+            right: 12%;
+            width: 20px;
+            height: 20px;
+            background: #d97706;
+            border-radius: 50%;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 60px 50px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 8px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-top: 3px solid #059669;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            color: #1a1a1a;
+            text-align: center;
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 60px;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, #059669, #d97706);
+            border-radius: 1px;
+        }
+        
+        .intro-section {
+            background: #059669;
+            color: #ffffff;
+            padding: 24px 28px;
+            border-radius: 6px;
+            margin-bottom: 50px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(217, 151, 6, 0.25);
+            border-radius: 0 6px 0 100%;
+        }
+        
+        .intro-section::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+        
+        .intro-section p {
+            font-size: 1rem;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .form-group {
+            margin-bottom: 32px;
+        }
+        
+        .section-header {
+            color: #1a1a1a;
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 50px 0 24px 0;
+            padding: 0 0 12px 0;
+            border-bottom: 1px solid #e5e5e5;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #059669, #d97706);
+            border-radius: 2px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1a1a1a;
+            font-size: 0.95rem;
+            letter-spacing: -0.01em;
+        }
+        
+        input[type="text"], 
+        input[type="email"], 
+        select, 
+        textarea {
+            width: 100%;
+            padding: 16px 0;
+            border: none;
+            border-bottom: 1px solid #e5e5e5;
+            border-radius: 0;
+            font-size: 16px;
+            background: transparent;
+            transition: border-color 0.2s ease;
+            font-family: inherit;
+            color: #1a1a1a;
+        }
+        
+        input[type="text"]:focus, 
+        input[type="email"]:focus, 
+        select:focus, 
+        textarea:focus {
+            outline: none;
+            border-bottom-color: #d97706;
+            border-bottom-width: 2px;
+            background: rgba(217, 151, 6, 0.02);
+        }
+        
+        select {
+            cursor: pointer;
+            background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 0 center;
+            background-size: 18px;
+            appearance: none;
+            padding-right: 24px;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 0;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            background: rgba(5, 150, 105, 0.02);
+            padding: 12px 16px;
+            border: 1px solid rgba(5, 150, 105, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            min-width: fit-content;
+            margin-right: 20px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        
+        .radio-item:hover {
+            background: rgba(5, 150, 105, 0.08);
+            border-color: rgba(5, 150, 105, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .radio-item input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #d97706;
+            transform: scale(1.2);
+        }
+        
+        .radio-item input[type="radio"]:checked + label {
+            color: #d97706;
+            font-weight: 600;
+        }
+        
+        .radio-item:has(input[type="radio"]:checked) {
+            background: rgba(217, 151, 6, 0.08);
+            border-color: #d97706;
+            box-shadow: 0 2px 8px rgba(217, 151, 6, 0.15);
+        }
+        
+        .radio-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+            transition: all 0.2s ease;
+        }
+        
+        textarea {
+            height: 80px;
+            resize: vertical;
+            font-family: inherit;
+            padding-top: 12px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #1a1a1a 0%, #059669 100%);
+            color: #ffffff;
+            padding: 18px 48px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 50px auto 0;
+            transition: all 0.2s ease;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #059669 0%, #d97706 100%);
+            transition: left 0.3s ease;
+            z-index: 0;
+        }
+        
+        .submit-btn:hover::before {
+            left: 0;
+        }
+        
+        .submit-btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .container {
+                padding: 40px 30px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .radio-item {
+                margin-right: 0;
+                padding: 8px 0;
+            }
+            
+            /* Hide floating elements on mobile */
+            body::before,
+            body::after,
+            .floating-accent,
+            .floating-line,
+            .floating-triangle,
+            .floating-dot {
+                display: none;
+            }
+        }
+        
+        /* Subtle entrance animation */
+        .container {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Clean focus states */
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            background: rgba(217, 151, 6, 0.02);
+        }
+        
+        /* Placeholder styling */
+        ::placeholder {
+            color: #9ca3af;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-accent"></div>
+    <div class="floating-line"></div>
+    <div class="floating-triangle"></div>
+    <div class="floating-dot"></div>
+    
+    <div class="container">
+        <h1>Roommate Application</h1>
+        
+        <div class="intro-section">
+            <p>
+                Hi! My name is Alison Partee and I am looking to rent out one of my vacant bedrooms. Please fill out the information below and I will review your details.
+            </p>
+        </div>
+        
+        <form action="https://formspree.io/f/myznzeed" method="POST">
+            <div class="section-header">Contact Information</div>
+            
+            <div class="form-group">
+                <label for="name">Full Name*</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="section-header">Employment & Financial</div>
+            
+            <div class="form-group">
+                <label for="occupation">Current Occupation*</label>
+                <input type="text" id="occupation" name="occupation" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="income">Monthly Income Range*</label>
+                <select id="income" name="income" required>
+                    <option value="">Select range...</option>
+                    <option value="under-2000">Under $2,000</option>
+                    <option value="2000-3000">$2,000 - $3,000</option>
+                    <option value="3000-4000">$3,000 - $4,000</option>
+                    <option value="4000-5000">$4,000 - $5,000</option>
+                    <option value="5000-plus">$5,000+</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Are you able to provide evidence of sufficient income or references?*</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="income-evidence-yes" name="income-evidence" value="yes" required>
+                        <label for="income-evidence-yes">Yes</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="income-evidence-no" name="income-evidence" value="no" required>
+                        <label for="income-evidence-no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Have you ever been late on rent or had rental issues?*</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="rent-issues-yes" name="rent-issues" value="yes" required>
+                        <label for="rent-issues-yes">Yes</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="rent-issues-no" name="rent-issues" value="no" required>
+                        <label for="rent-issues-no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-header">Living History</div>
+            
+            <div class="form-group">
+                <label for="previous-living">Previous living situations (with roommates, alone, with family)*</label>
+                <textarea id="previous-living" name="previous-living" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="moving-reason">Why are you moving from your current place?*</label>
+                <textarea id="moving-reason" name="moving-reason" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Can you provide previous landlord or roommate references?*</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="references-yes" name="references" value="yes" required>
+                        <label for="references-yes">Yes</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="references-no" name="references" value="no" required>
+                        <label for="references-no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-header">Lifestyle & Habits</div>
+            
+            <div class="form-group">
+                <label>Are you a morning person or night owl?*</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="morning-person" name="schedule" value="morning" required>
+                        <label for="morning-person">Morning person</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="night-owl" name="schedule" value="night" required>
+                        <label for="night-owl">Night owl</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="flexible" name="schedule" value="flexible" required>
+                        <label for="flexible">Flexible</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="free-time">How do you typically spend your free time?*</label>
+                <textarea id="free-time" name="free-time" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="work-from-home">Do you work from home? If so, how often?*</label>
+                <select id="work-from-home" name="work-from-home" required>
+                    <option value="">Select...</option>
+                    <option value="never">No, never</option>
+                    <option value="occasionally">Occasionally (1-2 days/week)</option>
+                    <option value="frequently">Frequently (3-4 days/week)</option>
+                    <option value="always">Yes, always/full-time</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="cleanliness">How would you describe your cleanliness level? (1-10, with 10 being very clean)*</label>
+                <select id="cleanliness" name="cleanliness" required>
+                    <option value="">Select...</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            
+            <div class="section-header">Additional Information</div>
+            
+            <div class="form-group">
+                <label>Do you have any pets?*</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="pets-yes" name="pets" value="yes" required>
+                        <label for="pets-yes">Yes</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="pets-no" name="pets" value="no" required>
+                        <label for="pets-no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="move-in-date">When are you looking to move in?*</label>
+                <input type="text" id="move-in-date" name="move-in-date" placeholder="e.g., January 1st, As soon as possible" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lease-length">How long are you looking to lease?*</label>
+                <select id="lease-length" name="lease-length" required>
+                    <option value="">Select...</option>
+                    <option value="3-months">3 months</option>
+                    <option value="6-months">6 months</option>
+                    <option value="1-year">1 year</option>
+                    <option value="longer">Longer than 1 year</option>
+                    <option value="flexible">Flexible/Open to discussion</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Would you be comfortable with a background check?*</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="background-yes" name="background-check" value="yes" required>
+                        <label for="background-yes">Yes</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="background-no" name="background-check" value="no" required>
+                        <label for="background-no">No</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <span>Submit Application</span>
+            </button>
+        </form>
+    </div>
+</body>
+</html>
